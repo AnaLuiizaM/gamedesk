@@ -112,25 +112,25 @@
   <div class="d-flex" id="wrapper">
     <div id="sidebar-wrapper">
       <div class="sidebar-heading text-light text-center">
-        <img src="css/assets/gdlogo2.png" alt="Logo" class="img-fluid" style="max-width: 60%; margin-bottom: 30px;">
+        <img src="{% static 'home/images/gdlogo2.png' %}" alt="Logo" class="img-fluid" style="max-width: 60%; margin-bottom: 30px; height: auto;"> <!-- Substitua o URL pela URL da sua imagem -->
       </div>
       <div class="list-group list-group-flush">
-        <a href="home.html" class="list-group-item list-group-item-action">
+        <a href="{% url 'index' %}" class="list-group-item list-group-item-action">
           <i class="fas fa-home"></i> Inicio
         </a>
-        <a href="equipe.html" class="list-group-item list-group-item-action">
+        <a href="{% url 'lista de equipe' %}" class="list-group-item list-group-item-action">
           <i class="fas fa-users"></i> Minhas equipes
         </a>
-        <a href="atividades.html" class="list-group-item list-group-item-action">
+        <a href="{% url 'lista de atividades' %}" class="list-group-item list-group-item-action">
           <i class="fas fa-tasks"></i> Atividades da equipe
         </a>
         <hr class="bg-light">
-        <a href="cadastrarequipe.html" class="list-group-item list-group-item-action">
+        <a href="{% url 'cadastro de equipe' %}" class="list-group-item list-group-item-action">
           <i class="fas fa-user-plus"></i> Cadastrar Equipe
         </a>
-        <a href="cadastraratividades.html" class="list-group-item list-group-item-action">
-          <i class="fas fa-plus-circle"></i> Cadastrar Atividades
-        </a>
+        <a href="{% url 'cadastro de atividades' %}" class="list-group-item list-group-item-action">
+            <i class="fas fa-plus-circle"></i> Cadastrar Atividades
+          </a>
       </div>
     </div>
 

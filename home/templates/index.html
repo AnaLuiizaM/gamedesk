@@ -104,17 +104,20 @@
         <div class="card shadow" id="loginCard">
             <div class="card-body">
                 <h3 class="card-title text-center">Entrar</h3>
-                <form id="loginForm">
+                <form id="loginForm" action="{% url 'login' %}" method="POST">
+                    {% csrf_token %}
                     <div class="form-group mb-3">
                         <label for="username">Username</label>
-                        <input type="username" id="usernameID" class="form-control" placeholder="Digite seu username" required>
+                        <input type="text"placeholder="Digite seu username"  name="username" class="form-control" id="username" required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="loginPassword">Senha</label>
-                        <input type="password" id="loginPassword" class="form-control" placeholder="Digite sua senha" required>
+                        <input type="password" id="loginPassword" name="password" class="form-control" placeholder="Digite sua senha" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                    <button type="submit" value="logar" class="btn btn-primary w-100">Entrar</button>
                 </form>
+                
+
                 <div class="form-switch">
                     <p>Não tem uma conta? <a href="#" onclick="toggleForm()">Cadastre-se</a></p>
                 </div>
@@ -125,20 +128,16 @@
         <div class="card shadow d-none" id="registerCard">
             <div class="card-body">
                 <h3 class="card-title text-center">Cadastro</h3>
-                <form id="registerForm">
+                <form id="registerForm" action="{% url 'cadastro' %}" method="POST">{%csrf_token%}
                     <div class="form-group mb-3">
-                        <label for="registerName">Nome Completo</label>
-                        <input type="text" id="registerName" class="form-control" placeholder="Digite seu nome" required>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="registerEmail">Email</label>
-                        <input type="email" id="registerEmail" class="form-control" placeholder="Digite seu email" required>
+                        <label for="registerName">Usuario</label>
+                        <input type="text" placeholder="Crie um Usuario" name="username" class="form-control" id="username" required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="registerPassword">Senha</label>
-                        <input type="password" id="registerPassword" class="form-control" placeholder="Crie uma senha" required>
+                        <input type="password" placeholder="Crie uma senha" name="password" class="form-control" id="registerPassword" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+                    <button type="submit"  value="cadastrar" class="btn btn-primary w-100">Cadastrar</button>
                 </form>
                 <div class="form-switch">
                     <p>Já tem uma conta? <a href="#" onclick="toggleForm()">Login</a></p>
@@ -162,52 +161,7 @@
         registerCard.classList.toggle('d-none');
     }
 
-    // Exibe uma notificação na tela
-    function showNotification(message, type = 'info') {
-        var notificationContainer = document.getElementById('notificationContainer');
-        var notificationCard = document.createElement('div');
-        
-        // Adiciona as classes de estilo e conteúdo ao card
-        notificationCard.className = `alert alert-${type} notification-card show`;
-        notificationCard.textContent = message;
-        
-        // Adiciona o card no container
-        notificationContainer.appendChild(notificationCard);
 
-        // Remove a notificação após 3 segundos
-        setTimeout(function() {
-            notificationCard.classList.remove('show');
-            notificationCard.classList.add('hide');
-            setTimeout(function() {
-                notificationContainer.removeChild(notificationCard);
-            }, 500); // Tempo da animação de saída
-        }, 3000);
-    }
-
-    // Manipula o evento de envio do formulário de login
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Simulação de verificação de login (substitua por lógica real)
-        var email = document.getElementById('loginEmail').value;
-        var password = document.getElementById('loginPassword').value;
-
-        // Exemplo simples de verificação (use uma verificação adequada no mundo real)
-        if (email === "user@exemplo.com" && password === "123") {
-            window.location.href = "home.html"; // Redireciona para a página Home
-        } else {
-            showNotification('Email ou senha incorretos!', 'danger'); // Exibe notificação de erro
-        }
-    });
-
-    // Manipula o evento de envio do formulário de cadastro
-    document.getElementById('registerForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Simulação de cadastro bem-sucedido (substitua por lógica real)
-        showNotification('Cadastro realizado com sucesso!', 'success'); // Exibe notificação de sucesso
-        toggleForm(); // Alterna de volta para o formulário de login após o cadastro
-    });
 </script>
 
 </body>

@@ -7,38 +7,36 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 
-def cadastro(request):
+def cadastro_view(request):
     if request.method == 'GET':
-        return render(request, 'authSignup.html')
+        return render(request, 'index.html')
     else:
         username = request.POST.get('username')
-        email = request.POST.get('email')
-        senha = request.POST.get('senha')
+        email = request.POST.get('email')  # Se for utilizar email
+        senha = request.POST.get('password')  # Use "password" para consistência
     
         user = User.objects.filter(username=username).first()
         if user:
-            return render(request, 'authSignin.html')
+            return render(request, 'authSignin.html', {'error': 'Usuário já existe'})
         
-
         user = User.objects.create_user(username=username, email=email, password=senha)
         user.save()
         return redirect('login')
         
 
-def login(request):
+def login_view(request):
     if request.method == 'GET':
         return render(request, 'index.html')
     
     else:
         username = request.POST.get('username')
-        senha = request.POST.get('senha')
+        password = request.POST.get('password')
         
-        user = authenticate(username=username, password=senha)
+        user = authenticate(username=username, password=password)
         
-        # Se o usuário for autenticado, o usuário é logado e redirecionado para a página de autenticação
         if user:
             auth_login(request, user)
-            return render(request, 'index.html', {'usuario': user.username})
+            return redirect('index')
         else:
             return render(request, 'loginErro.html', {'error': 'Usuário ou senha inválidos'})
         
