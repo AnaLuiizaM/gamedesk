@@ -1,0 +1,288 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Desk</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"> <!-- Biblioteca de ícones -->
+  <link rel="shortcut icon" href="{% static 'home/images/gdlogo.png' %}" type="image/x-icon">
+  
+  <style>
+    body {
+      background-color: #121416; /* Cor de fundo mais escura */
+      color: #f8f9fa; /* Cor do texto mais clara */
+    }
+
+    #wrapper {
+      display: flex;
+    }
+
+    /* Sidebar sempre fixa à esquerda */
+    #sidebar-wrapper {
+      width: 210px;
+      height: 100vh; /* Ocupa 100% da altura da janela */
+      background-color: #121416; /* Cor escura para a sidebar */
+      position: fixed;
+      padding-top: 20px; /* Distância do topo */
+      overflow-y: auto; /* Habilita o scroll caso o conteúdo exceda a altura da tela */
+    }
+
+    #page-content-wrapper {
+      margin-left: 250px; /* Compensa a largura da barra lateral */
+      width: calc(100% - 250px);
+      padding-left: 20px;
+      padding-right: 20px; /* Adiciona um espaço à direita para o botão */
+      height: auto; /* Ajusta a altura automaticamente */
+      position: relative; /* Para posicionar o botão de logout */
+    }
+
+    /* Navbar escura */
+    .navbar {
+      background-color: #121416;
+      margin-left: -60px;
+    }
+
+    .navbar .btn {
+      background-color: #495057;
+      border: none;
+      color: white;
+    }
+
+    /* Estilo dos botões da sidebar */
+    .list-group-item {
+      background-color: #121416;
+      color: #a6a8aa;
+      width: 190px;
+      height: 50px;
+      border-radius: 5px; /* Bordas arredondadas */
+      margin: 10px 15px; /* Distância das bordas laterais e entre os botões */
+      margin-top: 1px;
+      padding: 10px 20px; /* Tamanho reduzido */
+      transition: all 0.3s ease; /* Animação suave nos botões */
+      border: none; /* Remover bordas brancas */
+      display: flex;
+      align-items: center; /* Alinhar texto e ícone no centro verticalmente */
+    }
+
+    /* Mudança de cor e efeito no hover */
+    .list-group-item:hover i {
+      color: #f8f9fa; /* Apenas o ícone muda de cor */
+    }
+    .list-group-item:hover {
+      background-color: #343a40;
+      color: #f8f9fa;
+    }
+
+    .list-group-item i {
+      margin-right: 10px; /* Espaçamento entre o ícone e o texto */
+      transition: color 0.3s ease; /* Transição de cor suave do ícone */
+      color: #a6a8aa; /* Cor padrão do ícone */
+    }
+
+    /* Estilo das imagens */
+    .image-container {
+      position: relative; /* Para posicionar a borda interna */
+      border-radius: 10px; /* Bordas arredondadas */
+      overflow: hidden; /* Esconde partes que ultrapassam a borda */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Sombra da imagem */
+      transition: all 0.3s ease; /* Transição suave */
+      max-width: 1000px; /* Define um tamanho máximo para as imagens */
+      margin: 10px; /* Espaçamento entre as imagens */
+    }
+
+    .image-container::before {
+      content: ""; /* Cria um elemento pseudo para a borda */
+      position: absolute;
+      top: 0px; /* Distância da borda superior */
+      left: 0px; /* Distância da borda esquerda */
+      right: 0px; /* Distância da borda direita */
+      bottom: 0px; /* Distância da borda inferior */
+      border: 5px solid #f8f9fa; /* Cor da borda interna */
+      border-radius: 10px; /* Bordas arredondadas */
+      opacity: 0; /* Inicialmente invisível */
+      transition: opacity 0.3s ease; /* Transição suave */
+    }
+
+    .image-container:hover::before {
+      opacity: 1; /* Torna a borda visível ao passar o mouse */
+    }
+
+    img {
+      width: 900px; /* Imagens ocupam 100% da largura do contêiner */
+      height: auto; /* Mantém a proporção das imagens */
+      border-radius: 10px; /* Bordas arredondadas para a imagem */
+    }
+
+    /* Estilo para garantir que as imagens fiquem lado a lado */
+    .row {
+      display: flex; /* Flex para manter imagens lado a lado */
+      justify-content: flex-start; /* Alinha as imagens à esquerda */
+      padding-right: 10px; /* Adiciona um pouco de espaço à esquerda */
+      margin-right: 30px;
+    }
+
+    /* Estilo da grade de jogos */
+    .game-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Define colunas automáticas */
+      gap: 15px; /* Espaço entre os itens da grade */
+      margin-top: 30px; /* Espaço acima da grade */
+    }
+
+    .game-item {
+      background-color: #17191b; /* Cor de fundo dos itens */
+      border-radius: 10px; /* Bordas arredondadas */
+      overflow: hidden; /* Esconde partes que ultrapassam a borda */
+      text-align: center; /* Centraliza o texto */
+      color: #f8f9fa; /* Cor do texto */
+      padding: 10px; /* Espaçamento interno */
+      transition: transform 0.3s; /* Transição suave para efeito hover */
+    }
+
+    .game-item img {
+      width: 100%; /* Imagem ocupa 100% do item */
+      height: auto; /* Mantém a proporção */
+    }
+
+    .game-item:hover {
+      transform: scale(1.05); /* Efeito de aumento ao passar o mouse */
+    }
+
+    ::-webkit-scrollbar {
+        width: 12px; /* Largura da scrollbar */
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #343a40; /* Cor de fundo da pista da scrollbar */
+        border-radius: 10px; /* Bordas arredondadas */
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #636363; /* Cor do "polegar" da scrollbar */
+        border-radius: 10px; /* Bordas arredondadas */
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #636363; /* Cor do "polegar" ao passar o mouse */
+    }
+
+    /* Estilizando a scrollbar para Firefox */
+    html {
+        scrollbar-width: thin; /* Largura da scrollbar */
+        scrollbar-color: #636363 #343a40; /* Cor do "polegar" e da pista */
+    }
+    
+    /* Estilo do botão de logout */
+    .logout-btn {
+      position: absolute; /* Posição absoluta para posicionar no canto superior direito */
+      top: 10px; /* Distância do topo */
+      right: 20px; /* Distância da direita */
+      background-color: transparent; /* Fundo transparente */
+      border: none; /* Sem borda */
+      color: #f8f9fa; /* Cor do texto */
+      font-size: 20px; /* Tamanho do ícone */
+      transition: color 0.3s; /* Transição de cor suave */
+    }
+
+    .logout-btn:hover {
+      color: #dc3545; /* Cor ao passar o mouse (vermelho) */
+    }
+  </style>
+</head>
+<body>
+  <div class="d-flex" id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+      <div class="sidebar-heading text-light text-center">
+        <img src="{% static 'home/images/gdlogo2.png' %}" alt="Logo" class="img-fluid" style="max-width: 60%; margin-bottom: 30px; height: auto;"> <!-- Substitua o URL pela URL da sua imagem -->
+      </div>
+      <div class="list-group list-group-flush">
+        <a href="home.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <a href="equipe.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-users"></i> Minhas equipes
+        </a>
+        <a href="atividades.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-tasks"></i> Atividades da equipe
+        </a>
+        <hr class="bg-light">
+        <a href="cadastrarequipe.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-user-plus"></i> Cadastrar Equipe
+        </a>
+        <a href="cadastraratividades.html" class="list-group-item list-group-item-action">
+            <i class="fas fa-plus-circle"></i> Cadastrar Atividades
+          </a>
+      </div>
+    </div>
+
+  
+    <!-- <div id="page-content-wrapper">
+      <nav class="navbar navbar-expand-lg navbar-dark">
+        <button class="logout-btn">
+          <form method="post" action="{% url 'logout' %}">
+            <i class="fas fa-sign-out-alt"></i>
+          </form>
+        </button>
+      </nav> -->
+
+      <!-- Page Content -->
+<div id="page-content-wrapper">
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <button class="logout-btn" onclick="document.getElementById('logout-form').submit();">
+      <i class="fas fa-sign-out-alt"></i>
+    </button>
+    <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
+      {% csrf_token %}
+    </form>
+  </nav>
+
+
+
+
+
+      <div class="container-fluid">
+        <div class="row justify-content-start mt-4">
+          <div class="col-md-6 d-flex justify-content-center">
+            <a href="equipe.html" class="image-container">
+              <img src="{% static 'home/images/cards1.png' %}" alt="Image 1" class="img-fluid"> <!-- Substitua pela URL da sua imagem -->
+            </a>
+          </div>
+          <div class="col-md-6 d-flex justify-content-center">
+            <a href="cadastrarequipe.html" class="image-container">
+              <img src="{% static 'home/images/cards2.png' %}" alt="Image 2" class="img-fluid"> <!-- Substitua pela URL da sua imagem -->
+            </a>
+          </div>
+        </div>
+
+        <!-- Grade de Jogos -->
+        <h2 class="text-center mt-5">Jogos</h2>
+        <div class="game-container">
+          <div class="game-item">
+            <img src="{% static 'home/images/jogo1.png' %}" alt="Jogo 1">
+            <p><strong>Edição Standard do EA SPORTS FC™ 25</strong></p>
+          </div>
+          <div class="game-item">
+            <img src="{% static 'home/images/jogo2.png' %}" alt="Jogo 2">
+            <p><strong>Fortnite</strong></p>
+          </div>
+          <div class="game-item">
+            <img src="{% static 'home/images/jogo3.jpg' %}" alt="Jogo 3">
+            <p><strong>Battlefield 4™ Edição Premium</strong></p>
+          </div>
+          <div class="game-item">
+            <img src="{% static 'home/images/jogo4.png' %}" alt="Jogo 4">
+            <p><strong>Warhammer 40,000: Space Marine 2</strong></p>
+          </div>
+        </div>
+        <!-- Fim da Grade de Jogos -->
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

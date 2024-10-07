@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Desk - Cadastrar Equipe</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="css/assets/gdlogo.png" type="image/x-icon">
+  <style>
+    body {
+      background-color: #121416;
+      color: #f8f9fa;
+    }
+
+    #wrapper {
+      display: flex;
+    }
+
+    #sidebar-wrapper {
+      width: 210px;
+      height: 100vh;
+      background-color: #121416;
+      position: fixed;
+      padding-top: 20px;
+      overflow-y: auto;
+    }
+
+    #page-content-wrapper {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      padding: 20px;
+    }
+
+    .navbar {
+      background-color: #121416;
+    }
+
+    .list-group-item {
+      background-color: #121416;
+      color: #a6a8aa;
+      width: 190px;
+      height: 50px;
+      border-radius: 5px;
+      margin: 10px 15px;
+      margin-top: 1px;
+      padding: 10px 20px;
+      border: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .list-group-item:hover {
+      background-color: #343a40;
+      color: #f8f9fa;
+    }
+
+    .list-group-item i {
+      margin-right: 10px;
+      color: #a6a8aa;
+    }
+
+    .logout-btn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background-color: transparent;
+      border: none;
+      color: #f8f9fa;
+      font-size: 20px;
+    }
+
+    .logout-btn:hover {
+      color: #dc3545;
+    }
+
+    /* Estilo dos inputs */
+    .form-control {
+      background-color: #343a40;
+      color: #f8f9fa; /* Texto branco */
+      border: 1px solid #495057;
+      border-radius: 20px;
+      padding: 10px 15px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      background-color: #495057;
+      color: #f8f9fa; /* Texto branco no foco também */
+      border-color: #8b008d;
+      box-shadow: 0 0 10px #530055;
+    }
+
+    /* Estilo do select */
+    .form-select {
+      background-color: #343a40;
+      color: #f8f9fa; /* Texto branco */
+      border: 1px solid #495057;
+      border-radius: 20px;
+      padding: 10px 15px;
+      transition: all 0.3s ease;
+    }
+
+    .form-select:focus {
+      background-color: #495057;
+      color: #f8f9fa; /* Texto branco no foco também */
+      border-color: #8b008d;
+      box-shadow: 0 0 10px #530055;
+    }
+
+    /* Estilo do botão de registrar */
+    .btn-primary {
+      background-color: #8b008d;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #530055;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    ::-webkit-scrollbar {
+        width: 12px; /* Largura da scrollbar */
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #343a40; /* Cor de fundo da pista da scrollbar */
+        border-radius: 10px; /* Bordas arredondadas */
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #636363; /* Cor do "polegar" da scrollbar */
+        border-radius: 10px; /* Bordas arredondadas */
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #636363; /* Cor do "polegar" ao passar o mouse */
+    }
+
+    /* Estilizando a scrollbar para Firefox */
+    html {
+        scrollbar-width: thin; /* Largura da scrollbar */
+        scrollbar-color: #636363 #343a40; /* Cor do "polegar" e da pista */
+    }
+  </style>
+</head>
+<body>
+  <div class="d-flex" id="wrapper">
+    <div id="sidebar-wrapper">
+      <div class="sidebar-heading text-light text-center">
+        <img src="css/assets/gdlogo2.png" alt="Logo" class="img-fluid" style="max-width: 60%; margin-bottom: 30px;">
+      </div>
+      <div class="list-group list-group-flush">
+        <a href="home.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <a href="equipe.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-users"></i> Minhas equipes
+        </a>
+        <a href="atividades.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-tasks"></i> Atividades da equipe
+        </a>
+        <hr class="bg-light">
+        <a href="cadastrarequipe.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-user-plus"></i> Cadastrar Equipe
+        </a>
+        <a href="cadastraratividades.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-plus-circle"></i> Cadastrar Atividades
+        </a>
+      </div>
+    </div>
+
+    <div id="page-content-wrapper">
+      <!-- <nav class="navbar navbar-expand-lg navbar-dark">
+        <button class="logout-btn" onclick="location.href='index.html'">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </nav> -->
+
+      <div class="container">
+        <h2 class="mt-4">Registrar Equipe</h2>
+        <form id="team-form">
+          <div class="mb-3">
+            <label for="team-name" class="form-label">Nome da Equipe</label>
+            <input type="text" class="form-control" id="team-name" required>
+          </div>
+          <div class="mb-3">
+            <label for="game-select" class="form-label">Selecione o Jogo</label>
+            <select class="form-select" id="game-select" required>
+              <option value="" selected disabled>Escolha um jogo...</option>
+              <option value="Fortnite">Fortnite</option>
+              <option value="EA SPORTS FC™ 25">EA SPORTS FC™ 25</option>
+              <option value="Battlefield 4™">Battlefield 4™</option>
+              <option value="Warhammer 40,000: Space Marine 2">Warhammer 40,000: Space Marine 2</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="player-count" class="form-label">Número de Jogadores</label>
+            <input type="number" class="form-control" id="player-count" min="1" max="10" required>
+          </div>
+
+          <div id="player-names-container" class="mb-3"></div>
+
+          <button type="submit" class="btn btn-primary">Registrar Equipe</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('player-count').addEventListener('input', function () {
+      const playerCount = parseInt(this.value);
+      const playerContainer = document.getElementById('player-names-container');
+      playerContainer.innerHTML = ''; // Limpa os campos anteriores
+
+      for (let i = 1; i <= playerCount; i++) {
+        const playerInput = document.createElement('input');
+        playerInput.type = 'text';
+        playerInput.className = 'form-control mb-2';
+        playerInput.placeholder = `Nome do Jogador ${i}`;
+        playerInput.required = true;
+        playerInput.name = `player-${i}`;
+        playerContainer.appendChild(playerInput);
+      }
+    });
+
+    document.getElementById('team-form').addEventListener('submit', function (event) {
+      event.preventDefault(); // Evita o envio do formulário para uma nova página
+
+      const teamName = document.getElementById('team-name').value;
+      const game = document.getElementById('game-select').value;
+      const playerCount = document.getElementById('player-count').value;
+      const players = [];
+
+      for (let i = 1; i <= playerCount; i++) {
+        players.push(document.querySelector(`input[name="player-${i}"]`).value);
+      }
+
+      // Recupera as equipes já salvas no Local Storage
+      let teams = JSON.parse(localStorage.getItem('teams')) || [];
+
+      // Adiciona a nova equipe
+      teams.push({
+        teamName: teamName,
+        game: game,
+        players: players
+      });
+
+      // Salva de volta no Local Storage
+      localStorage.setItem('teams', JSON.stringify(teams));
+
+      alert('Equipe registrada com sucesso!');
+
+      // Redireciona para a página de equipes
+      window.location.href = 'equipe.html';
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

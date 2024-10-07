@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Desk - Minhas Equipes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="css/assets/gdlogo.png" type="image/x-icon">
+  
+  <style>
+    body {
+      background-color: #121416;
+      color: #f8f9fa;
+    }
+    #wrapper {
+      display: flex;
+    }
+    #sidebar-wrapper {
+      width: 210px;
+      height: 100vh;
+      background-color: #121416;
+      position: fixed;
+      padding-top: 20px;
+      overflow-y: auto;
+    }
+    #page-content-wrapper {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      padding: 20px;
+    }
+    .navbar {
+      background-color: #121416;
+    }
+    .list-group-item {
+      background-color: #121416;
+      color: #a6a8aa;
+      width: 190px;
+      height: 50px;
+      border-radius: 5px;
+      margin: 10px 15px;
+      margin-top: 1px;
+      padding: 10px 20px;
+      border: none;
+      display: flex;
+      align-items: center;
+    }
+    .list-group-item:hover {
+      background-color: #343a40;
+      color: #f8f9fa;
+    }
+    .list-group-item i {
+      margin-right: 10px;
+      color: #a6a8aa;
+    }
+    .logout-btn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background-color: transparent;
+      border: none;
+      color: #f8f9fa;
+      font-size: 20px;
+    }
+    .logout-btn:hover {
+      color: #dc3545;
+    }
+    /* Estilos dos cards */
+    .card {
+      background-color: #121416;
+      border: 1px solid #343a40;
+      color: #f8f9fa;
+    }
+    .card-title {
+      color: #ffffff; /* Cor do nome da equipe */
+    }
+    .card-text {
+      color: #a6a8aa;
+    }
+    .card-text i {
+      color: #ffffff; /* Ícones com cor diferenciada */
+      margin-right: 10px;
+    }
+    /* Botão de excluir */
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .delete-btn:hover {
+      background-color: #c82333;
+    }
+
+    ::-webkit-scrollbar {
+        width: 12px; /* Largura da scrollbar */
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #343a40; /* Cor de fundo da pista da scrollbar */
+        border-radius: 10px; /* Bordas arredondadas */
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #636363; /* Cor do "polegar" da scrollbar */
+        border-radius: 10px; /* Bordas arredondadas */
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #636363; /* Cor do "polegar" ao passar o mouse */
+    }
+
+    /* Estilizando a scrollbar para Firefox */
+    html {
+        scrollbar-width: thin; /* Largura da scrollbar */
+        scrollbar-color: #636363 #343a40; /* Cor do "polegar" e da pista */
+    }
+  </style>
+</head>
+<body>
+  <div class="d-flex" id="wrapper">
+    <div id="sidebar-wrapper">
+      <div class="sidebar-heading text-light text-center">
+        <img src="css/assets/gdlogo2.png" alt="Logo" class="img-fluid" style="max-width: 60%; margin-bottom: 30px;">
+      </div>
+      <div class="list-group list-group-flush">
+        <a href="home.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <a href="equipe.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-users"></i> Minhas equipes
+        </a>
+        <a href="atividades.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-tasks"></i> Atividades da equipe
+        </a>
+        <hr class="bg-light">
+        <a href="cadastrarequipe.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-user-plus"></i> Cadastrar Equipe
+        </a>
+        <a href="cadastraratividades.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-plus-circle"></i> Cadastrar Atividades
+        </a>
+      </div>
+    </div>
+
+    <div id="page-content-wrapper">
+      <div class="container">
+        <h2 class="mt-4">Minhas Equipes</h2>
+        <div id="team-list" class="mt-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Carrega equipes salvas no Local Storage
+    let teams = JSON.parse(localStorage.getItem('teams')) || [];
+
+    const teamListDiv = document.getElementById('team-list');
+
+    // Função para renderizar as equipes
+    function renderTeams() {
+      teamListDiv.innerHTML = ''; // Limpa a lista
+
+      if (teams.length > 0) {
+        teams.forEach((team, index) => {
+          const teamCard = document.createElement('div');
+          teamCard.className = 'card mb-3';
+          teamCard.innerHTML = `
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-users"></i> ${team.teamName}</h5>
+              <p class="card-text"><i class="fas fa-gamepad"></i> Jogo: ${team.game}</p>
+              <p class="card-text"><i class="fas fa-user"></i> Jogadores: ${team.players.join(', ')}</p>
+              <button class="delete-btn" onclick="deleteTeam(${index})">Excluir Equipe</button>
+            </div>
+          `;
+          teamListDiv.appendChild(teamCard);
+        });
+      } else {
+        teamListDiv.innerHTML = '<p>Nenhuma equipe registrada.</p>';
+      }
+    }
+
+    // Função para excluir equipe
+    function deleteTeam(index) {
+      teams.splice(index, 1); // Remove a equipe da lista
+      localStorage.setItem('teams', JSON.stringify(teams)); // Atualiza o Local Storage
+      renderTeams(); // Re-renderiza a lista
+    }
+
+    // Renderiza as equipes na inicialização
+    renderTeams();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>             

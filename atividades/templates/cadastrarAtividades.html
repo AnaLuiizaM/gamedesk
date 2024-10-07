@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Desk - Cadastrar Atividades</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="css/assets/gdlogo.png" type="image/x-icon">
+  
+  <style>
+    body {
+      background-color: #121416;
+      color: #f8f9fa;
+    }
+
+    #wrapper {
+      display: flex;
+    }
+
+    #sidebar-wrapper {
+      width: 210px;
+      height: 100vh;
+      background-color: #121416;
+      position: fixed;
+      padding-top: 20px;
+      overflow-y: auto;
+    }
+
+    #page-content-wrapper {
+      margin-left: 250px;
+      width: calc(100% - 250px);
+      padding: 20px;
+    }
+
+    .navbar {
+      background-color: #121416;
+      margin-left: -60px;
+    }
+
+    .list-group-item {
+      background-color: #121416;
+      color: #a6a8aa;
+      width: 190px;
+      height: 50px;
+      border-radius: 5px;
+      margin: 10px 15px;
+      margin-top: 1px;
+      padding: 10px 20px;
+      border: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .list-group-item:hover {
+      background-color: #343a40;
+      color: #f8f9fa;
+    }
+
+    .list-group-item i {
+      margin-right: 10px;
+      color: #a6a8aa;
+    }
+
+    .logout-btn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background-color: transparent;
+      border: none;
+      color: #f8f9fa;
+      font-size: 20px;
+    }
+
+    .logout-btn:hover {
+      color: #dc3545;
+    }
+
+    /* Estilo do formulário */
+    .form-control {
+      background-color: #343a40;
+      color: #f8f9fa; /* Texto branco */
+      border: 1px solid #495057;
+      border-radius: 20px;
+      padding: 10px 15px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      background-color: #495057;
+      color: #f8f9fa; /* Texto branco no foco também */
+      border-color: #8b008d;
+      box-shadow: 0 0 10px #530055;
+    }
+
+    /* Estilo do select */
+    .form-select {
+      background-color: #343a40;
+      color: #f8f9fa; /* Texto branco */
+      border: 1px solid #495057;
+      border-radius: 20px;
+      padding: 10px 15px;
+      transition: all 0.3s ease;
+    }
+
+    .form-select:focus {
+      background-color: #495057;
+      color: #f8f9fa; /* Texto branco no foco também */
+      border-color: #8b008d;
+      box-shadow: 0 0 10px #530055;
+    }
+
+    /* Estilo do botão de registrar */
+    .btn-primary {
+      background-color: #8b008d;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #530055;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="d-flex" id="wrapper">
+    <div id="sidebar-wrapper">
+      <div class="sidebar-heading text-light text-center">
+        <img src="css/assets/gdlogo2.png" alt="Logo" class="img-fluid" style="max-width: 60%; margin-bottom: 30px;">
+      </div>
+      <div class="list-group list-group-flush">
+        <a href="home.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-home"></i> Inicio
+        </a>
+        <a href="equipe.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-users"></i> Minhas equipes
+        </a>
+        <a href="atividades.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-tasks"></i> Atividades da equipe
+        </a>
+        <hr class="bg-light">
+        <a href="cadastrarequipe.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-user-plus"></i> Cadastrar Equipe
+        </a>
+        <a href="cadastraratividades.html" class="list-group-item list-group-item-action">
+          <i class="fas fa-plus-circle"></i> Cadastrar Atividades
+        </a>
+      </div>
+    </div>
+
+    <div id="page-content-wrapper">
+      <h2 class="mt-4">Cadastrar Atividade</h2>
+      <form id="activity-form" class="mt-4">
+        <div class="mb-3">
+          <label for="team-select" class="form-label">Selecionar Equipe:</label>
+          <select class="form-select" id="team-select" required></select>
+        </div>
+        <div class="mb-3">
+          <label for="activity-description" class="form-label">Descrição da Atividade:</label>
+          <textarea class="form-control" id="activity-description" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Cadastrar Atividade</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Carregar equipes do Local Storage
+    const teams = JSON.parse(localStorage.getItem('teams')) || [];
+    const teamSelect = document.getElementById('team-select');
+
+    // Preencher o select com as equipes
+    teams.forEach((team) => {
+      const option = document.createElement('option');
+      option.value = team.teamName;
+      option.textContent = team.teamName;
+      teamSelect.appendChild(option);
+    });
+
+    // Função para cadastrar atividade
+    document.getElementById('activity-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const selectedTeam = teamSelect.value;
+      const activityDescription = document.getElementById('activity-description').value;
+
+      const activities = JSON.parse(localStorage.getItem('activities')) || [];
+
+      // Adicionar nova atividade ao array de atividades
+      activities.push({
+        team: selectedTeam,
+        description: activityDescription,
+      });
+
+      // Salvar atividades no Local Storage
+      localStorage.setItem('activities', JSON.stringify(activities));
+
+      // Limpar o formulário
+      document.getElementById('activity-form').reset();
+      alert('Atividade cadastrada com sucesso!');
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
